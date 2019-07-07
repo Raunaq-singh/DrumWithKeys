@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DrumWithKeys</title>
+	<link rel="stylesheet" type="text/css" href="DrumWithKeys.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet">
+	<script type="text/javascript" src="paper-full.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.core.min.js"></script>
+	<!-- Define inlined PaperScript associate it with myCanvas -->
+<script type="text/paperscript" canvas="myCanvas">
+	var keyData = {
+		w: {
+			sound: new Howl({src : ["DrumSounds/closedhat.wav"]}),
+			//color: "#2ecc71"
+		},
+		e: {
+			sound: new Howl({src : ["DrumSounds/crash.wav"]}),
+			//color: "#3498db"
+		},
+		r: {
+			sound: new Howl({src : ["DrumSounds/kick.wav"]}),
+			//color: "#9b59b6"
+		},
+		y: {
+			sound: new Howl({src: ["DrumSounds/openhat.wav"]}),
+			//color: "#16a085"
+		},
+		u: {
+			sound: new Howl({src: ["DrumSounds/openthenclosedhat.wav"]}),
+			//color: "#27ae60"
+		},
+		i: {
+			sound: new Howl({src: ["DrumSounds/ridebell.wav"]}),
+			//color: "#2980b9"
+		},
+		a: {
+			sound: new Howl({src: ["DrumSounds/snare.wav"]}),
+			//color: "#f1c40f"
+		},
+		l: {
+			sound: new Howl({src: ["DrumSounds/tomhi.wav"]}),
+			//color: "#3498db"
+		},
+		c: {
+			sound: new Howl({src: ["DrumSounds/tomlow.wav"]}),
+			//color: "#16a085"
+		},
+		b: {
+			sound: new Howl({src: ["DrumSounds/tommid.wav"]}),
+			//color: "#2980b9"
+		},
+	}; 
+
+	var elseSound = new Howl({src: ["DrumSounds/bubbles.mp3"]});
+	var y= view.size.height;
+	var x= view.size.width;
+	var circles = [];
+	function onKeyDown(event) {
+
+		if(keyData[event.key]){
+			y= view.size.height;
+			x= view.size.width;
+			var random1 = Math.random();
+			var random2 = Math.random();
+
+			var myCircle = new Path.Circle(new Point(x*random1, y*random2), 500);
+
+			myCircle.fillColor = "black";
+			//keyData[event.key].color;
+			keyData[event.key].sound.play();
+
+			circles.push(myCircle);
+		}else{
+			elseSound.play();
+		}
+	}
+
+	function onFrame(event){
+
+		for(var i=0;i<circles.length;i++){
+			circles[i].fillColor.hue+=1;
+			circles[i].scale(0.9);
+		}
+		
+	}
+	var drumImage = new Raster('image');
+	drumImage.position=view.center;
+</script>
+
+</head>
+<body>
+	<div class="ui center aligned container" id="sticky">
+		<h1 class="ui center header">
+			Drum With Keys
+		</h1>
+		<h2 class="ui center header">
+			Relevant keys are W,E,R,Y,U,I,A,C,B
+		</h2>
+	</div>
+	<canvas id="myCanvas" resize>
+		<img src="DrumSounds/DrumImage.jpg" id="image">
+	</canvas>
+</body>
+</html>
